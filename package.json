@@ -1,0 +1,29 @@
+{
+  "name": "All-The-News-That-Fit-to-Scrape",
+  "version": "1.0.0",
+  "description": "It is a web application that utilizes Mongoose and Cheerio to scrape articles from InVision Blog, and allows users to save articles and to make notes.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SultanaK/All-The-News-That-Fit-to-Scrape.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SultanaK/All-The-News-That-Fit-to-Scrape/issues"
+  },
+  "homepage": "https://github.com/SultanaK/All-The-News-That-Fit-to-Scrape#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.4.0",
+    "request": "^2.88.0"
+  }
+}
