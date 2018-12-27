@@ -21,18 +21,21 @@ app.use(bodyParser.urlencoded({
 app.use(express.static('public'));
 
 //Mongoose - Configure and connect to the database 
-mongoose.connect('mongodb://localhost/scrapeGoose');
-var db = mongoose.connection;
+//mongoose.connect('mongodb://localhost/scrapeGoose');
+//var db = mongoose.connection;
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrapeGoose";
+
+mongoose.connect(MONGODB_URI);
 
 //Mongoose - show errors
-db.on("error", function(error){
-	console.log("Mongoose error: ", error);
-});
+//db.on("error", function(error){
+	//console.log("Mongoose error: ", error);
+//});
 
 //Mongoose - success message upon database connection
-db.once("open", function(){
-	console.log("The 'goose is go!")
-});
+//db.once("open", function(){
+//	console.log("The 'goose is go!")
+//});
 
 
 //======Routes=======
@@ -44,7 +47,7 @@ app.get('/', function(request, response) {
 
 //Scrape route
 app.get("/scrape", function(req, res){
-	console.log("***scrape***");
+	//console.log("***scrape***");
 	var url = "http://www.streetsblog.org/";
 	request(url, function (error, response, html) {
 		if(error){
@@ -53,9 +56,9 @@ app.get("/scrape", function(req, res){
 
 		//Load the scraped site's html into cheerio
 		var $ = cheerio.load(html);
-
+    
 		//loop through each scraped article
-		$("h2.post-title").children().each(function (i, element){
+		$(".site-chicklet").children().each(function (i, element){
 			var title = $(element).text().trim();
 			var link = $(element).attr("href");
 
@@ -63,13 +66,15 @@ app.get("/scrape", function(req, res){
 			    title: title,
 			    link: link
 			};
-
+            //console.log("result", result);
 				Article.find({link: result.link}, function(error, articleArr){
 				//If the current article is already in the database
-				if(articleArr.length){
+        
+                if(articleArr.length){
 					console.log("Article skipped: ", articleArr)
 				}//Otherwise, store it to the DB
 				else{
+                    
 				  	var scrapedArticle = new Article(result);
 				  	scrapedArticle.save(function(error, doc){
 				  		if (error){
@@ -81,7 +86,7 @@ app.get("/scrape", function(req, res){
 				}
 			})
 		});
-		// response.send("Site scraped!")
+		 res.send("Site scraped!")
 	});
 })
 
